@@ -167,12 +167,16 @@ Socket.prototype.createTransport = function (name) {
   // session id if we already have one
   if (this.id) query.sid = this.id;
 
+  var tagWS = false;
+  if(query.transport == "websocket")
+    tagWS=true;
+
   var transport = new transports[name]({
     agent: this.agent,
     hostname: this.hostname,
     port: this.port,
     secure: this.secure,
-    path: this.path,
+    path: tagWS ? "/ws/"+this.path : this.path,
     query: query,
     forceJSONP: this.forceJSONP,
     jsonp: this.jsonp,
